@@ -1,4 +1,4 @@
-FROM mysql/mysql-server:8.0.28
+FROM mysql:latest
 
 RUN microdnf install yum \
   && yum install -y glibc-langpack-ja glibc-locale-source git
