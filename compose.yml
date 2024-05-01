@@ -11,6 +11,9 @@ services:
       - "8000:80"
     depends_on:
       - db
+    env_file:
+      - ./docker/db/db-variables.env
+
   db:
     build:
       context: .
