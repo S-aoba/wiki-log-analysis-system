@@ -1,5 +1,5 @@
 FROM php:8-apache
 
-WORKDIR /var/www/src
+WORKDIR /app
 
-COPY ./src/ /var/www/src/
+COPY ./app /app
