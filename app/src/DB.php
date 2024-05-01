@@ -69,8 +69,6 @@ class DB
 
     try {
       $this->pdo->query($query);
-      // クエリの実行が成功したことを示すメッセージを出力する
-      echo $this->dbTablename . "テーブルを作成しました" . PHP_EOL;
     } catch (PDOException $e) {
       // エラーが発生した場合は例外をキャッチし、エラーメッセージを出力する
       echo "テーブルの作成に失敗しました: " . $e->getMessage() . PHP_EOL;
@@ -84,9 +82,6 @@ class DB
     try {
       $stmt = $this->pdo->prepare($query);
       $stmt->execute();
-
-      // クエリの実行が成功したことを示すメッセージを出力する
-      echo "テーブルをクリアしました" . PHP_EOL;
     } catch (PDOException $e) {
       // エラーが発生した場合は例外をキャッチし、エラーメッセージを出力する
       echo "テーブルのクリアに失敗しました: " . $e->getMessage() . PHP_EOL;
@@ -118,5 +113,52 @@ class DB
       // エラーが発生した場合は例外をキャッチし、エラーメッセージを出力する
       echo "データのインポートに失敗しました: " . $e->getMessage() . PHP_EOL;
     }
+  }
+
+  public function getTopPageViews(int $limit): array
+  {
+    $query = "SELECT domain_code, page_title, count_views FROM {$this->dbTablename} ORDER BY count_views DESC LIMIT {$limit}";
+
+    try {
+      $stmt = $this->pdo->query($query);
+      $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      return $rows;
+    } catch (PDOException $e) {
+      echo "エラー: " . $e->getMessage() . PHP_EOL;
+    }
+  }
+
+  function getPopularPages($domainCode)
+  {
+    $query = <<<SQL
+        SELECT
+            domain_code,
+            SUM(count_views) AS total_views
+        FROM
+            page_views
+        WHERE
+            domain_code = :domain_code
+        GROUP BY
+            domain_code
+        ORDER BY
+            total_views DESC
+        SQL;
+
+    try {
+      $stmt = $this->pdo->prepare($query);
+      $stmt->bindParam(':domain_code', $domainCode);
+      $stmt->execute();
+      $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      return $rows;
+    } catch (PDOException $e) {
+      echo "エラー: " . $e->getMessage() . PHP_EOL;
+    }
+  }
+
+  public function closeDB(): void
+  {
+    $this->pdo = null;
   }
 }
