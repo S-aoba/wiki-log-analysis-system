@@ -1,6 +1,8 @@
 <?php
 
+require_once(__DIR__ . '../../DB.php');
+
 interface Task
 {
-  public function execute();
+  public function execute(DB $db);
 }
