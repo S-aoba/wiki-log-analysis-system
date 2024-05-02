@@ -1,8 +1,8 @@
 <?php
 
 require_once(__DIR__ . '/DB.php');
-require_once(__DIR__ . '/Task.php');
-require_once(__DIR__ . '/Log.php');
+require_once(__DIR__ . '/TopPageViews.php');
+require_once(__DIR__ . '/PopularPages.php');
 
 class Analysis
 {
@@ -23,18 +23,12 @@ class Analysis
       // 選択されたタスクを実行
       switch ($userAction) {
         case '1':
-          // 指定したドメインコードに対して、人気順にソートして表示するタスク
-          echo "ドメインコードを入力してください: ";
-          $domainCode = trim(fgets(STDIN));
-          $res = $db->getPopularPages($domainCode);
-          Log::displayPopularPages($res);
+          $popularPages = new PopularPages();
+          $popularPages->execute($db);
           break;
         case '2':
-          // 指定した記事数分だけビュー数が多い順にソートして表示するタスク
-          echo "件数を入力してください: ";
-          $limit = trim(fgets(STDIN));
-          $res = $db->getTopPageViews($limit);
-          Log::displayTopPageViews($res);
+          $topPageViews = new TopPageViews();
+          $topPageViews->execute($db);
           break;
         case '3':
           echo "処理を終了します" . PHP_EOL;
