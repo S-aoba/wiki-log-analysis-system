@@ -26,7 +26,14 @@ class DB
 
   private function checkDataInPageViewTable(): bool
   {
-    $query = "SELECT * FROM {$this->dbTablename} LIMIT 1";
+    $query = <<<SQL
+        SELECT
+            *
+        FROM
+            {$this->dbTablename}
+        LIMIT
+            1
+        SQL;
 
     try {
       $stmt = $this->pdo->query($query);
@@ -59,13 +66,15 @@ class DB
 
   public function createPageViewsTable()
   {
-    $query = "CREATE TABLE IF NOT EXISTS page_views (
+    $query = <<<SQL
+        CREATE TABLE IF NOT EXISTS page_views (
         domain_code VARCHAR(255),
         page_title VARCHAR(500),
         count_views INT,
         total_response_size INT,
         PRIMARY KEY (domain_code, page_title)
-    )";
+        )
+        SQL;
 
     try {
       $this->pdo->query($query);
@@ -117,7 +126,16 @@ class DB
 
   public function getTopPageViews(int $limit): array
   {
-    $query = "SELECT domain_code, page_title, count_views FROM {$this->dbTablename} ORDER BY count_views DESC LIMIT {$limit}";
+    $query = <<<SQL
+        SELECT
+            domain_code, page_title, count_views
+        FROM
+            {$this->dbTablename}
+        ORDER BY
+            count_views DESC
+        LIMIT
+            {$limit}
+        SQL;
 
     try {
       $stmt = $this->pdo->query($query);
