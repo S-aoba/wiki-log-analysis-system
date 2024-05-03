@@ -11,7 +11,7 @@ class Analysis
     $db = new DB();
 
     $db->createPageViewsTable();
-    // $db->loadDataInPageViews();
+    $db->loadDataInPageViews();
 
     while (true) {
       // ユーザーにタスクを選択してもらう
