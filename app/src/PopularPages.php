@@ -27,7 +27,7 @@ class PopularPages implements Task
       };
 
       // // ターミナルに表示する
-      Log::displayPopularPages($res);
+      Log::displayPopularPages($res, $domainCodeArr);
       break;
     }
   }
