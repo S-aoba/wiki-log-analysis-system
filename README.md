@@ -23,6 +23,15 @@ wikipediaから公開されているページアクセスログを解析し、�
 2. ダウンロードしたファイルを/app/databasesディレクトリにpage_viewというファイル名に変更して保存をしてください。
 - /app/databases/page_view
 
+3. docker/dbディレクトリにdb-variablesファイルを作成し、以下のコードを記述してください。
+```
+MYSQL_DATABASE=test_database
+MYSQL_PASSWORD=pass
+MYSQL_ROOT_PASSWORD=pass
+MYSQL_USER=test_user
+```
+※ test_database等の値はご自由に変えていただいて結構です。
+
 ## 使用方法
 事前準備が完了しましたら、ここからDocerを立ち上げてアプリを実行します。
 以下のコマンドをご使用のターミナルに打ち込んでください。
