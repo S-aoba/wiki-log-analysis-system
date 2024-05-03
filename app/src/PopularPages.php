@@ -21,11 +21,11 @@ class PopularPages implements Task
       $res = $db->getPopularPages($domainCode);
 
       // データが存在していない場合の処理
-      if(count($res) === 0) {
+      if (count($res) === 0) {
         echo "指定したドメインコードは存在していません" . PHP_EOL;
         continue;
       };
-      
+
       // ターミナルに表示する
       Log::displayPopularPages($res);
       break;
@@ -34,21 +34,35 @@ class PopularPages implements Task
 
   private function getDomainCodeByUser(): string
   {
-    $domainCode = '';
-    while (true) {
-      echo "ドメインコードを入力してください: ";
-      $domainCode = trim(fgets(STDIN));
+    echo "ドメインコードを入力してください: ";
+    $domainCode = trim(fgets(STDIN));
 
-      // 入力された値が文字列かどうかを判定する
-      $isString = ValidationHelper::isPureString($domainCode);
-
-      if ($isString) {
-        break;
-      }
-
-      echo "不正な値が入力されました" . PHP_EOL;
-    }
+    // スペース区切りで複数のdomainCodeを配列に直して取得する
 
     return $domainCode;
+  }
+
+  private function convertArray(string $inputVal): array
+  {
+    $output = [];
+    $inputValLen = strlen($inputVal);
+    for ($i = 0; $i < $inputValLen; $i++) {
+      $domainCode = '';
+      $char = $inputVal[$i];
+
+      // 半角の空白ならそれまでのdomainCodeを配列に追加する
+      if($this->containsHalfWidthSpace($char)){
+        array_push($output, $domainCode);
+      }
+      else{
+        $domainCode .= $char;
+      }
+    }
+    return $output;
+  }
+
+  private function containsHalfWidthSpace($str)
+  {
+    return strpos($str, ' ') !== false;
   }
 }
