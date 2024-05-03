@@ -43,6 +43,9 @@ MYSQL_USER=test_user
 ```
 dokcer compose up -d --build
 ```
+> [!WARNING]
+> インポートするファイルのデータ数が多いとかなりの時間がかかりますのでご注意ください。
+
 2. wiki_log_analysis_systemの起動
 ```
 docker compose exec app php wiki-log-analysis.php
