@@ -23,7 +23,7 @@ wikipediaから公開されているページアクセスログを解析し、�
 2. ダウンロードしたファイルを/app/databasesディレクトリにpage_viewというファイル名に変更して保存をしてください。
 - /app/databases/page_view
 
-3. docker/dbディレクトリにdb-variablesファイルを作成し、以下のコードを記述してください。
+3. docker/dbディレクトリにdb-variables.envファイルを作成し、以下のコードを記述してください。
 ```
 MYSQL_DATABASE=test_database
 MYSQL_PASSWORD=pass
