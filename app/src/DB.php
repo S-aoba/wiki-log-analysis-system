@@ -147,8 +147,10 @@ class DB
     }
   }
 
-  function getPopularPages($domainCode)
+  function getPopularPages(array $domainCodeArr)
   {
+    $placeholders = implode(',', array_fill(0, count($domainCodeArr), '?'));
+
     $query = <<<SQL
         SELECT
             domain_code,
@@ -156,7 +158,7 @@ class DB
         FROM
             page_views
         WHERE
-            domain_code = :domain_code
+            domain_code IN ($placeholders)
         GROUP BY
             domain_code
         ORDER BY
@@ -165,7 +167,10 @@ class DB
 
     try {
       $stmt = $this->pdo->prepare($query);
-      $stmt->bindParam(':domain_code', $domainCode);
+      // 各ドメインコードを個別のパラメータとしてバインドする
+      for ($i = 0; $i < count($domainCodeArr); $i++) {
+        $stmt->bindParam($i + 1, $domainCodeArr[$i]);
+      }
       $stmt->execute();
       $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
