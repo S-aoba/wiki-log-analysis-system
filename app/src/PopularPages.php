@@ -13,15 +13,23 @@ class PopularPages implements Task
   public function execute(DB $db)
   {
     // 指定したドメインコードに対して、人気順にソートして表示するタスク
+    while (true) {
+      // 検索するdomain_codeを取得
+      $domainCode = $this->getDomainCodeByUser();
 
-    // 検索するdomain_codeを取得
-    $domainCode = $this->getDomainCodeByUser();
+      // データベースからデータを取得
+      $res = $db->getPopularPages($domainCode);
 
-    // データベースからデータを取得
-    $res = $db->getPopularPages($domainCode);
-    
-    // ターミナルに表示する
-    Log::displayPopularPages($res);
+      // データが存在していない場合の処理
+      if(count($res) === 0) {
+        echo "指定したドメインコードは存在していません" . PHP_EOL;
+        continue;
+      };
+      
+      // ターミナルに表示する
+      Log::displayPopularPages($res);
+      break;
+    }
   }
 
   private function getDomainCodeByUser(): string
